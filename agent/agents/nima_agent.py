@@ -70,7 +70,7 @@ def create_nima_agent(
         additional_authorized_imports=["numpy", "matplotlib", "scipy", "pandas"],
     )
 
-    # Set system prompt
-    agent.system_prompt = PHYSICS_SYSTEM_PROMPT
+    # Set system prompt using the new property format
+    agent.prompt_templates["system_prompt"] = PHYSICS_SYSTEM_PROMPT
 
     return agent

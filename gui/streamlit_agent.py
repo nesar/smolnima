@@ -273,6 +273,7 @@ def create_streamlit_agent(config):
         additional_authorized_imports=["numpy", "matplotlib", "scipy", "pandas"],
     )
 
-    agent.system_prompt = PHYSICS_SYSTEM_PROMPT
+    # Set system prompt using the new property format
+    agent.prompt_templates["system_prompt"] = PHYSICS_SYSTEM_PROMPT
 
     return agent
