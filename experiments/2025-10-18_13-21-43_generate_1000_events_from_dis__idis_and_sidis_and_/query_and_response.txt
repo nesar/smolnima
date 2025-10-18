@@ -1,3 +1,0 @@
-Query: generate 1000 events from dis, idis and sidis and show me plots 
-
-Response: Generated 1000 events for default, DIS, IDIS and SIDIS configurations and visualized the quark distributions for each case. The plots are saved as default_quark_distributions.png, quark_distributions.png, quark_distributions.png, and quark_distributions.png respectively.
