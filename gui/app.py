@@ -123,12 +123,8 @@ with st.sidebar:
     st.divider()
     st.subheader("📚 Example Queries")
     examples = [
-        "What is the mass of a proton in MeV?",
-        "Calculate Lorentz factor for v=0.9c",
-        "Generate 1000 physics events",
-        "What are the properties of a muon?",
-        "Visualize quark distributions",
-        "Calculate binding energy of Carbon-12",
+        "Calculate Lorentz factor for v=0.1c, 0.2c, 0.4c, 0.5c. Show them in a scatter plot.",
+        "Plot the parton distribution functions for deep inelastic scattering process, inclusive deep inelastic scattering and semi-inclusive deep inelastic scattering processes.",
     ]
 
     for example in examples:
