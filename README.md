@@ -219,3 +219,4 @@ Same as original Dr. NIMA project.
 - Original NIMA: Multi-agent Streamlit implementation
 - smolnima: Minimal smolagents rewrite
 - Framework: [smolagents by Hugging Face](https://github.com/huggingface/smolagents)
+# Refactored for clean separation of agent and GUI components
