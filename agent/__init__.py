@@ -1,7 +1,9 @@
-"""Physics tools for smolnima - backward compatibility wrapper."""
+"""Core agent system for smolnima - no streamlit dependencies."""
 
-# Re-export from new agent.tools module for backward compatibility
-from agent.tools import (
+from .agents import create_nima_agent
+from .models import GeminiModel
+from .prompts import PHYSICS_SYSTEM_PROMPT
+from .tools import (
     calculate_relativistic_energy,
     calculate_lorentz_factor,
     get_particle_properties,
@@ -14,6 +16,9 @@ from agent.tools import (
 )
 
 __all__ = [
+    "create_nima_agent",
+    "GeminiModel",
+    "PHYSICS_SYSTEM_PROMPT",
     "calculate_relativistic_energy",
     "calculate_lorentz_factor",
     "get_particle_properties",

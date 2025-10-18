@@ -2,13 +2,23 @@
 
 from smolagents import CodeAgent
 import streamlit as st
-from agent import create_nima_agent, PHYSICS_SYSTEM_PROMPT
-from models import GeminiModel
 import matplotlib.pyplot as plt
-import io
 import sys
 from io import StringIO
 import re
+
+from agent import create_nima_agent, PHYSICS_SYSTEM_PROMPT, GeminiModel
+from agent.tools import (
+    calculate_relativistic_energy,
+    calculate_lorentz_factor,
+    get_particle_properties,
+    calculate_decay_probability,
+    calculate_binding_energy,
+    generate_physics_events,
+    visualize_quark_distributions,
+    search_knowledge_base,
+    load_documents_from_directory,
+)
 
 
 class StreamlitCodeAgent(CodeAgent):
@@ -223,17 +233,6 @@ def create_streamlit_agent(config):
     Returns:
         StreamlitCodeAgent instance
     """
-    from tools import (
-        calculate_relativistic_energy,
-        calculate_lorentz_factor,
-        get_particle_properties,
-        calculate_decay_probability,
-        calculate_binding_energy,
-        generate_physics_events,
-        visualize_quark_distributions,
-        search_knowledge_base,
-    )
-    from tools.rag_tool import load_documents_from_directory
     import os
 
     # Initialize model with retry logic

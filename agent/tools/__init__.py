@@ -1,14 +1,17 @@
-"""Physics tools for smolnima - backward compatibility wrapper."""
+"""Physics tools for smolnima agents."""
 
-# Re-export from new agent.tools module for backward compatibility
-from agent.tools import (
+from .particle_physics import (
     calculate_relativistic_energy,
     calculate_lorentz_factor,
     get_particle_properties,
     calculate_decay_probability,
     calculate_binding_energy,
+)
+from .gan_physics import (
     generate_physics_events,
     visualize_quark_distributions,
+)
+from .rag_tool import (
     search_knowledge_base,
     load_documents_from_directory,
 )

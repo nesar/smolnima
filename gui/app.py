@@ -8,14 +8,16 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import io
 
-# Add current directory to path for imports
-current_dir = Path(__file__).parent
+# Add parent directory to path for imports
+current_dir = Path(__file__).parent.parent
 if str(current_dir) not in sys.path:
     sys.path.insert(0, str(current_dir))
 
 from config import Config
-from streamlit_agent import create_streamlit_agent
-from streamlit_logger import StreamlitAgentLogger, display_agent_logs
+from gui.streamlit_agent import create_streamlit_agent
+from gui.streamlit_logger import StreamlitAgentLogger, display_agent_logs
+from experiment_tracker import ExperimentTracker
+
 st.set_page_config(
     page_title="smolnima - Dr. NIMA",
     page_icon="⚛️",
@@ -47,6 +49,12 @@ if "agent_outputs" not in st.session_state:
 if "agent_output" not in st.session_state:
     st.session_state.agent_output = []
 
+if "experiment_tracker" not in st.session_state:
+    st.session_state.experiment_tracker = ExperimentTracker()
+
+if "save_experiments" not in st.session_state:
+    st.session_state.save_experiments = True
+
 # Sidebar
 with st.sidebar:
     st.title("⚛️ smolnima")
@@ -72,6 +80,12 @@ with st.sidebar:
     max_steps = st.number_input("Max Steps", 5, 20, 10)
     temperature = st.number_input("Temperature", 0.0, 1.0, 0.3, 0.1)
     pdfs_dir = st.text_input("PDFs Directory", "./pdfs")
+
+    st.session_state.save_experiments = st.checkbox(
+        "Save Experiments",
+        value=st.session_state.save_experiments,
+        help="Save code, plots, and outputs to experiments/ directory"
+    )
 
     if st.button("🚀 Initialize Agent", type="primary", use_container_width=True):
         if not api_key:
@@ -203,6 +217,11 @@ with col_chat:
                     st.session_state.executed_code = []
                     st.session_state.agent_output = []
 
+                    # Start experiment tracking if enabled
+                    if st.session_state.save_experiments:
+                        exp_dir = st.session_state.experiment_tracker.start_experiment(prompt[:50])
+                        st.session_state.logger.info(f"Experiment started: {exp_dir.name}", "system")
+
                     # Run the agent
                     response = st.session_state.agent.run(prompt)
                     st.markdown(response)
@@ -265,6 +284,32 @@ with col_chat:
                         st.session_state.plots[plot_key] = plots
                         plt.close('all')
 
+                    # Save experiment artifacts if enabled
+                    if st.session_state.save_experiments:
+                        tracker = st.session_state.experiment_tracker
+                        exp_path = tracker.get_experiment_path()
+
+                        # Save query and response
+                        tracker.save_output(f"Query: {prompt}\n\nResponse: {response}", "query_and_response.txt")
+
+                        # Save executed code blocks
+                        if st.session_state.executed_code:
+                            tracker.save_codes(st.session_state.executed_code)
+
+                        # Save plots
+                        if plot_key in st.session_state.plots:
+                            tracker.save_plots(st.session_state.plots[plot_key])
+
+                        # Save metadata
+                        tracker.save_metadata("query", prompt)
+                        tracker.save_metadata("response", response)
+                        tracker.save_metadata("num_code_blocks", len(st.session_state.executed_code))
+                        tracker.save_metadata("num_plots", len(st.session_state.plots.get(plot_key, [])))
+
+                        tracker.finish_experiment()
+                        if exp_path:
+                            st.session_state.logger.success(f"Artifacts saved to experiments/{exp_path.name}", "system")
+
                     st.session_state.logger.success("Query completed successfully", "system")
                     st.session_state.messages.append({"role": "assistant", "content": response})
 
@@ -313,4 +358,9 @@ else:
         **Agent Activity:**
         - Watch the right panel for step-by-step progress
         - Green checkmarks indicate successful steps
+
+        **Experiment Tracking:**
+        - Enable "Save Experiments" in settings to save all artifacts
+        - Each run creates a timestamped folder in experiments/
+        - Saves code, plots, outputs, and metadata for reproducibility
         """)
