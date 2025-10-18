@@ -46,7 +46,8 @@ ENV/
 *.pdf
 plots/
 outputs/
-
+experiments/
+experiments/*
 # Cache
 .cache/
 .pytest_cache/

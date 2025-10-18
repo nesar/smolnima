@@ -1,9 +1,6 @@
-# Core dependencies
+# Core agent dependencies
 smolagents>=0.1.0
 google-generativeai>=0.3.0
-
-# Streamlit (for web UI)
-streamlit>=1.28.0
 
 # Scientific computing
 numpy>=1.24.0
@@ -11,8 +8,11 @@ scipy>=1.10.0
 matplotlib>=3.7.0
 pandas>=2.0.0
 
-# PDF processing
+# PDF processing (for RAG)
 PyPDF2>=3.0.0
+
+# GUI (optional - only needed for Streamlit interface)
+streamlit>=1.28.0
 
 # Optional: for enhanced functionality
 # tensorflow>=2.15.0  # For GAN training (optional)

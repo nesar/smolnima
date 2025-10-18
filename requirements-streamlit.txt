@@ -1,5 +1,0 @@
-# Include base requirements
--r requirements.txt
-
-# Add Streamlit
-streamlit>=1.28.0
