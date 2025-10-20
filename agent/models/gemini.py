@@ -3,7 +3,7 @@
 from smolagents import Model
 from smolagents.models import ChatMessage
 import google.generativeai as genai
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Union
 import time
 import logging
 
@@ -33,6 +33,7 @@ class GeminiModel(Model):
             retry_delay: Initial retry delay in seconds
             **kwargs: Additional generation config parameters
         """
+        super().__init__()
         self.model_id = model_id
         self.temperature = temperature
         self.max_retries = max_retries
@@ -123,6 +124,26 @@ class GeminiModel(Model):
                     raise
 
         raise Exception(f"Failed after {self.max_retries} attempts")
+
+    def forward(
+        self,
+        messages: List[Dict[str, str]],
+        stop_sequences: Optional[List[str]] = None,
+        **kwargs
+    ) -> str:
+        """
+        Forward method required by smolagents Model base class.
+
+        Args:
+            messages: List of message dicts with 'role' and 'content'
+            stop_sequences: Optional stop sequences
+            **kwargs: Additional generation parameters
+
+        Returns:
+            Generated text string
+        """
+        result = self.__call__(messages, stop_sequences, **kwargs)
+        return result.content if isinstance(result, ChatMessage) else str(result)
 
     def _messages_to_prompt(self, messages: List[Dict[str, str]]) -> str:
         """Convert message list to single prompt."""
