@@ -62,6 +62,8 @@ class GeminiModel(Model):
         self,
         messages: List[Dict[str, str]],
         stop_sequences: Optional[List[str]] = None,
+        grammar: Optional[str] = None,
+        tools_to_call_from: Optional[List] = None,
         **kwargs
     ) -> ChatMessage:
         """
@@ -70,6 +72,8 @@ class GeminiModel(Model):
         Args:
             messages: List of message dicts with 'role' and 'content'
             stop_sequences: Optional stop sequences
+            grammar: Optional grammar/formatting structure
+            tools_to_call_from: Optional list of tools (not used for Gemini)
             **kwargs: Additional generation parameters
 
         Returns:
