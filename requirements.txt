@@ -1,5 +1,5 @@
 # Core agent dependencies
-smolagents>=0.1.0
+smolagents==1.9.2
 google-generativeai>=0.3.0
 
 # Scientific computing
