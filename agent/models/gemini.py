@@ -79,6 +79,8 @@ class GeminiModel(Model):
         Returns:
             ChatMessage object with the response
         """
+        logger.info(f"GeminiModel.__call__ invoked with {len(messages)} messages")
+
         # Convert messages to Gemini format
         prompt = self._messages_to_prompt(messages)
 
@@ -125,47 +127,6 @@ class GeminiModel(Model):
                         raise Exception(f"Rate limit exceeded after {self.max_retries} attempts. Please wait before retrying.")
                 else:
                     # Non-rate-limit error, raise immediately
-                    raise
-
-        raise Exception(f"Failed after {self.max_retries} attempts")
-
-    def forward(self, prompt: str, **kwargs) -> str:
-        """
-        Forward method required by smolagents Model base class.
-
-        Args:
-            prompt: String prompt to generate from
-            **kwargs: Additional generation parameters
-
-        Returns:
-            Generated text string
-        """
-        # Generate response using Gemini API
-        for attempt in range(self.max_retries):
-            try:
-                response = self.model.generate_content(prompt)
-
-                # Extract text from response
-                if hasattr(response, 'text'):
-                    return response.text
-                elif hasattr(response, 'candidates') and response.candidates:
-                    return response.candidates[0].content.parts[0].text
-                else:
-                    return str(response)
-
-            except Exception as e:
-                error_msg = str(e)
-
-                # Check for rate limiting
-                if "429" in error_msg or "quota" in error_msg.lower() or "rate" in error_msg.lower():
-                    if attempt < self.max_retries - 1:
-                        delay = self.retry_delay * (2 ** attempt)
-                        logger.warning(f"Rate limit hit, retrying in {delay:.1f}s")
-                        time.sleep(delay)
-                        continue
-                    else:
-                        raise Exception(f"Rate limit exceeded after {self.max_retries} attempts.")
-                else:
                     raise
 
         raise Exception(f"Failed after {self.max_retries} attempts")
