@@ -52,10 +52,31 @@ class GeminiModel(Model):
             **kwargs
         }
 
+        # Set up safety settings - be permissive for code generation
+        self.safety_settings = [
+            {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "threshold": "BLOCK_NONE"
+            },
+            {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "threshold": "BLOCK_NONE"
+            },
+            {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "threshold": "BLOCK_NONE"
+            },
+            {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "threshold": "BLOCK_NONE"
+            },
+        ]
+
         # Create model
         self.model = genai.GenerativeModel(
             model_name=model_id,
-            generation_config=self.generation_config
+            generation_config=self.generation_config,
+            safety_settings=self.safety_settings
         )
 
     def __call__(
@@ -87,16 +108,44 @@ class GeminiModel(Model):
         # Retry loop for rate limiting
         for attempt in range(self.max_retries):
             try:
-                # Generate response
-                response = self.model.generate_content(prompt)
+                # Generate response with safety settings
+                response = self.model.generate_content(
+                    prompt,
+                    safety_settings=self.safety_settings
+                )
+
+                # Check if response was blocked
+                if not response.candidates:
+                    # Check prompt feedback for blocking reasons
+                    if hasattr(response, 'prompt_feedback'):
+                        feedback = response.prompt_feedback
+                        block_reason = getattr(feedback, 'block_reason', 'UNKNOWN')
+                        safety_ratings = getattr(feedback, 'safety_ratings', [])
+                        error_details = f"Response blocked. Reason: {block_reason}"
+                        if safety_ratings:
+                            error_details += f", Safety ratings: {safety_ratings}"
+                        logger.error(error_details)
+                        raise Exception(f"Gemini blocked the response: {block_reason}")
+                    else:
+                        raise Exception("Gemini returned empty candidates (content may be blocked)")
 
                 # Extract text from response
-                if hasattr(response, 'text'):
+                try:
+                    # Try the .text property first (most reliable)
                     text = response.text
-                elif hasattr(response, 'candidates') and response.candidates:
-                    text = response.candidates[0].content.parts[0].text
-                else:
-                    text = str(response)
+                except (ValueError, AttributeError):
+                    # Fallback to manual extraction
+                    if response.candidates and len(response.candidates) > 0:
+                        candidate = response.candidates[0]
+                        if hasattr(candidate, 'content') and hasattr(candidate.content, 'parts'):
+                            if len(candidate.content.parts) > 0:
+                                text = candidate.content.parts[0].text
+                            else:
+                                raise Exception("Response candidate has no parts")
+                        else:
+                            raise Exception("Response candidate has no content")
+                    else:
+                        raise Exception("No valid response candidates")
 
                 # Return as ChatMessage
                 return ChatMessage(role="assistant", content=text)
