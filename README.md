@@ -4,7 +4,7 @@
 
 ## Overview
 
-smolnima is a complete rewrite of Dr. NIMA using the smolagents framework. It provides an AI-powered assistant for particle and nuclear physics research with:
+smolnima is a prototype agentic system written for nuclear and particle physics applications. It is written with smolagent backend and a GUI with streamlit. It provides an AI-powered assistant for particle and nuclear physics research with:
 
 - **Physics Tools**: Relativistic calculations, particle properties, decay rates, binding energy
 - **Event Generation**: GAN-based particle physics event simulation
