@@ -230,6 +230,15 @@ agent = create_nima_agent(additional_tools=[my_custom_tool])
 
 Place PDF documents in `./pdfs/` directory. They will be automatically loaded and available for RAG search.
 
+## Documentation
+
+Comprehensive documentation available in `documentation/`:
+
+- **[01_RATIONALE.md](documentation/01_RATIONALE.md)** - Design rationale and motivation
+- **[02_ARCHITECTURE.md](documentation/02_ARCHITECTURE.md)** - System architecture
+- **[03_TOOLS.md](documentation/03_TOOLS.md)** - Complete tool reference
+- **[04_CLIENT.md](documentation/04_CLIENT.md)** - MCP client integration guide
+
 ## Development
 
 ```bash

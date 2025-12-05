@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Generate architecture diagrams for MCP-NIMA documentation.
+Generate architecture diagrams for smolnima documentation.
 
 Requires: graphviz (pip install graphviz)
 """

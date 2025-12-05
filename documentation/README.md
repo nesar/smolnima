@@ -1,6 +1,6 @@
-# MCP-NIMA Documentation
+# smolnima Documentation
 
-Professional, minimal documentation for the MCP-NIMA particle physics tool server.
+Professional, minimal documentation for the smolnima particle and nuclear physics assistant.
 
 ## Documentation Files
 
@@ -66,8 +66,8 @@ This creates:
 
 ### For Integrators
 - Architecture: [02_ARCHITECTURE.md](02_ARCHITECTURE.md)
-- Client guide: [04_CLIENT.md](04_CLIENT.md)
-- MCP server README: [../README.md](../README.md)
+- MCP client guide: [04_CLIENT.md](04_CLIENT.md)
+- MCP server README: [../mcp/README.md](../mcp/README.md)
 
 ## Documentation Style
 
@@ -79,7 +79,7 @@ This documentation follows professional technical writing principles:
 - **Structured**: Logical organization, easy navigation
 - **Visual**: Diagrams for complex concepts
 
-Inspired by the documentation style of [hep-ke/mcp](https://github.com/anthropics/hep-ke).
+Inspired by the documentation style of hep-ke/mcp.
 
 ## Contributing
 
