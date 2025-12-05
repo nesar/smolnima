@@ -219,6 +219,21 @@ ruff check .
 
 Same as parent smolnima project.
 
+## Documentation
+
+Comprehensive documentation available in `documentation/`:
+
+- **[01_RATIONALE.md](documentation/01_RATIONALE.md)** - Design rationale and motivation
+- **[02_ARCHITECTURE.md](documentation/02_ARCHITECTURE.md)** - System architecture and components
+- **[03_TOOLS.md](documentation/03_TOOLS.md)** - Complete tool reference with examples
+- **[04_CLIENT.md](documentation/04_CLIENT.md)** - MCP client integration guide
+
+Generate architecture diagrams:
+```bash
+cd documentation
+python3 flowchart.py  # Requires: pip install graphviz
+```
+
 ## Credits
 
 - Based on the design pattern from hep-ke/mcp
