@@ -273,7 +273,17 @@ def create_streamlit_agent(config):
         additional_authorized_imports=["numpy", "matplotlib", "scipy", "pandas"],
     )
 
-    # Set system prompt using the new property format
-    agent.prompt_templates["system_prompt"] = PHYSICS_SYSTEM_PROMPT
+    # Set system prompt using the new property format with additional Streamlit-specific guidance
+    streamlit_guidance = """
+
+STREAMLIT GUI ENVIRONMENT:
+You are running in a Streamlit web interface. When creating plots:
+- DO NOT use plt.savefig() to save plots to files
+- DO NOT use plt.close() to close figures
+- DO NOT return HTML <img> tags or file paths
+- Simply create the plot and leave it active - the GUI will automatically capture and display it
+- After plotting, just describe what was plotted in plain text
+"""
+    agent.prompt_templates["system_prompt"] = PHYSICS_SYSTEM_PROMPT + streamlit_guidance
 
     return agent

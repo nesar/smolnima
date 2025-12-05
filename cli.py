@@ -92,7 +92,7 @@ Examples:
   python -m smolnima.cli --api-key YOUR_KEY
 
   # Use different model
-  python -m smolnima.cli --model gemini-1.5-pro
+  python -m smolnima.cli --model gemini-2.5-pro
         """
     )
 
@@ -106,8 +106,8 @@ Examples:
     )
     parser.add_argument(
         "--model",
-        default="gemini-2.0-flash-exp",
-        help="Gemini model to use (default: gemini-2.0-flash-exp)"
+        default="gemini-2.5-flash",
+        help="Gemini model to use (default: gemini-2.5-flash)"
     )
     parser.add_argument(
         "--pdfs-dir",

@@ -11,7 +11,7 @@ class Config:
 
     # API Configuration
     api_key: Optional[str] = None
-    model_name: str = "gemini-2.0-flash-exp"
+    model_name: str = "gemini-2.5-flash"
 
     # Paths
     pdfs_dir: str = "./pdfs"
@@ -32,7 +32,7 @@ class Config:
         """Create config from environment variables."""
         return cls(
             api_key=os.getenv("GOOGLE_API_KEY"),
-            model_name=os.getenv("GEMINI_MODEL", "gemini-2.0-flash-exp"),
+            model_name=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
             pdfs_dir=os.getenv("PDFS_DIR", "./pdfs"),
             tools_dir=os.getenv("TOOLS_DIR", "./tools"),
             max_steps=int(os.getenv("MAX_STEPS", "10")),

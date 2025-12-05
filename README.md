@@ -156,7 +156,7 @@ Configure via environment variables or Config object:
 
 ```bash
 export GOOGLE_API_KEY="your-key"
-export GEMINI_MODEL="gemini-2.0-flash-exp"
+export GEMINI_MODEL="gemini-2.5-flash"
 export PDFS_DIR="./pdfs"
 export MAX_STEPS="10"
 export TEMPERATURE="0.3"
@@ -169,7 +169,7 @@ from smolnima import Config
 
 config = Config(
     api_key="your-key",
-    model_name="gemini-2.0-flash-exp",
+    model_name="gemini-2.5-flash",
     pdfs_dir="./pdfs",
     max_steps=10,
     temperature=0.3,

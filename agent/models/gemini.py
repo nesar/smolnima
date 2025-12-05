@@ -15,7 +15,7 @@ class GeminiModel(Model):
 
     def __init__(
         self,
-        model_id: str = "gemini-2.0-flash-exp",
+        model_id: str = "gemini-2.5-flash",
         api_key: Optional[str] = None,
         temperature: float = 0.3,
         max_retries: int = 3,
@@ -39,9 +39,12 @@ class GeminiModel(Model):
         self.max_retries = max_retries
         self.retry_delay = retry_delay
 
+        # Validate API key is provided
+        if not api_key:
+            raise ValueError("API key is required. Please provide a valid Google API key.")
+
         # Configure Gemini API
-        if api_key:
-            genai.configure(api_key=api_key)
+        genai.configure(api_key=api_key)
 
         # Set up generation config
         self.generation_config = {
@@ -78,6 +81,26 @@ class GeminiModel(Model):
             generation_config=self.generation_config,
             safety_settings=self.safety_settings
         )
+
+        # Validate API key by making a test call
+        logger.info("Validating API key...")
+        try:
+            test_response = self.model.generate_content(
+                "Hello",
+                safety_settings=self.safety_settings
+            )
+            # Check if we got a valid response
+            if not test_response.candidates:
+                raise Exception("API key validation failed: No response from Gemini API")
+            # Try to access the text to ensure it works
+            _ = test_response.text
+            logger.info("API key validated successfully")
+        except Exception as e:
+            error_msg = str(e)
+            if "API" in error_msg or "key" in error_msg.lower() or "authentication" in error_msg.lower() or "permission" in error_msg.lower():
+                raise ValueError(f"Invalid API key or authentication failed: {error_msg}")
+            else:
+                raise Exception(f"API key validation failed: {error_msg}")
 
     def __call__(
         self,
