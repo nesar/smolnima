@@ -56,6 +56,26 @@ python -m smolnima.cli
 python -m smolnima.cli -q "What is the mass of a proton?"
 ```
 
+### MCP Server (Model Context Protocol)
+
+Run as an MCP server to expose tools to AI assistants:
+
+```bash
+cd mcp
+./run_mcp_server.sh
+```
+
+For HTTP mode (SSE):
+
+```bash
+cd mcp
+export MCP_TRANSPORT=sse
+export MCP_PORT=8000
+./run_mcp_server.sh
+```
+
+See [mcp/README.md](mcp/README.md) for detailed MCP server documentation.
+
 ### Python API
 
 ```python
@@ -113,11 +133,22 @@ smolnima/
 ├── models.py         # Gemini model wrapper
 ├── agent.py          # Main agent setup
 ├── cli.py            # Command-line interface
-└── tools/            # Physics tools
-    ├── __init__.py
-    ├── particle_physics.py  # Core physics calculations
-    ├── gan_physics.py       # Event generation
-    └── rag_tool.py          # Document search
+├── gui/              # Streamlit web interface
+│   ├── app.py
+│   └── streamlit_agent.py
+├── agent/            # Agent components
+│   ├── agents/       # Agent implementations
+│   ├── models/       # Model wrappers
+│   ├── prompts/      # System prompts
+│   └── tools/        # Physics tools
+│       ├── particle_physics.py
+│       ├── gan_physics.py
+│       └── rag_tool.py
+└── mcp/              # MCP server
+    ├── mcp_server.py     # MCP server with auto-discovery
+    ├── tools/            # MCP-exposed physics tools
+    ├── agent_tools/      # Agent helper tools (placeholder)
+    └── mcp_utils/        # Utilities
 ```
 
 ## Key Differences from Original NIMA
@@ -125,11 +156,12 @@ smolnima/
 | Feature | Original NIMA | smolnima |
 |---------|---------------|----------|
 | **Framework** | Custom Streamlit | smolagents |
-| **Interface** | Web UI | CLI / Python API |
+| **Interface** | Web UI | CLI / Web UI / Python API / MCP Server |
 | **Agents** | Multi-agent (Manager, RAG, Code) | Single CodeAgent |
 | **Code** | ~2000+ lines | ~800 lines |
 | **Dependencies** | Streamlit + custom code | smolagents + minimal |
 | **Complexity** | High | Minimal |
+| **MCP Support** | ❌ No | ✅ Yes |
 
 ## Features Comparison
 
@@ -143,10 +175,11 @@ Both implementations support:
 smolnima advantages:
 - ✨ Much simpler codebase (~60% less code)
 - ✨ Proper use of smolagents framework
-- ✨ CLI, Web UI, and Python API
+- ✨ CLI, Web UI, Python API, and MCP Server
 - ✨ **Code execution transparency**: See all executed Python code
 - ✨ **Inline plot display**: Visualizations appear directly in GUI
 - ✨ **Real-time monitoring**: Agent activity tracking
+- ✨ **MCP integration**: Expose tools to any MCP-compatible AI assistant
 - ✨ Better separation of concerns
 - ✨ Easier to extend and maintain
 
