@@ -36,7 +36,7 @@ echo ""
 # Check if enhanced version exists, use it, otherwise use standard
 if [ -f "streamlit_app_enhanced.py" ]; then
     echo "   Using enhanced Streamlit app with agent activity panel"
-    streamlit run streamlit_app_enhanced.py --server.port $PORT
+    streamlit run gui/app.py --server.port $PORT
 else
-    streamlit run streamlit_app.py --server.port $PORT
+    streamlit run gui/app.py --server.port $PORT
 fi
